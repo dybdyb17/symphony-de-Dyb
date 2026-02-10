@@ -1,37 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}
+    {{ title }}
+{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>{{ title }}</h1>
 
-    <table class="table">
+    <table>
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
         </thead>
+
         <tbody>
         {% for user in users %}
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.password }}</td>
+                <td>{{ user.email }}</td>
                 <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('app_user_show', {id: user.id}) }}">Voir</a>
+                    <a href="{{ path('app_user_edit', {id: user.id}) }}">Modifier</a>
+                    <form action="{{ path('app_user_delete', {id: user.id}) }}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</button>
+                    </form>
                 </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_new') }}">Create new</a>
+    <a href="{{ path('app_user_new') }}">Créer un utilisateur</a>
+
 {% endblock %}
