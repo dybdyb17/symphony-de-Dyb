@@ -3,10 +3,13 @@
 {% block title %}Modifier user{% endblock %}
 
 {% block body %}
-    <h1>Modifier l'utilisateur {{ user.username }}</h1>
+    <h1>Voici ma page de creation</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <form action="{{ url('app_user_delete', { 'id': user.id }) }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+        <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+
+    {% include 'user/form.html.twig' %}
 
 {% endblock %}
