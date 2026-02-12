@@ -7,21 +7,29 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Slug</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Slug</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for product in products %}
             <tr>
                 <td>{{ product.id }}</td>
+                <td>
+                    {% if product.imageFilename %}
+                        <img src="/uploads/products/{{ product.imageFilename }}" alt="{{ product.title }}" width="100">
+                    {% else %}
+                        Pas d'image
+                    {% endif %}
+                </td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.slug }}</td>
                 <td>{{ product.description }}</td>
@@ -35,7 +43,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
