@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue sur mon site</h1>
+    <p>Ceci est la page d'accueil.</p>
+
+    <ul>
+        <li><a href="{{ path('app_user_index') }}">Voir les utilisateurs</a></li>
+        <li><a href="{{ path('app_product_index') }}">Voir les produits</a></li>
+    </ul>
+{% endblock %}
