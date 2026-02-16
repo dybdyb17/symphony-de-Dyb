@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/admin/product')]
 final class ProductController extends AbstractController
 {
     #[Route('/product', name: 'app_product_index', methods: ['GET'])]
@@ -20,7 +21,7 @@ final class ProductController extends AbstractController
     {
         $products = $productRepository->findAll();
 
-        return $this->render('product/index.html.twig', [
+        return $this->render('admin/product/index.html.twig', [
             'products' => $products
         ]);
     }
@@ -62,7 +63,7 @@ final class ProductController extends AbstractController
             return $this->redirectToRoute('app_product_index');
         }
 
-        return $this->render('product/new.html.twig', [
+        return $this->render('admin/product/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -108,7 +109,7 @@ final class ProductController extends AbstractController
             return $this->redirectToRoute('app_product_index');
         }
 
-        return $this->render('product/edit.html.twig', [
+        return $this->render('admin/product/edit.html.twig', [
             'form' => $form->createView(),
             'product' => $product
         ]);
@@ -139,7 +140,7 @@ final class ProductController extends AbstractController
     #[Route('/product/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
-        return $this->render('product/show.html.twig', [
+        return $this->render('admin/product/show.html.twig', [
             'product' => $product
         ]);
     }
