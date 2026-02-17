@@ -9,7 +9,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
 use Smknstd\FakerPicsumImages\FakerPicsumImagesProvider;
-use Symfony\Component\Filesystem\Filesystem;
 
 class ProductFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -18,31 +17,32 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
         $faker = Faker\Factory::create('fr_FR');
         $faker->addProvider(new FakerPicsumImagesProvider($faker));
 
-        $filesystem = new Filesystem();
         $destDir = dirname(__DIR__) . '/../public/uploads/products';
 
-        if (!$filesystem->exists($destDir)) {
-            $filesystem->mkdir($destDir, 0775);
+        if (!is_dir($destDir)) {
+            mkdir($destDir, 0775, true);
+        } else {
+            exec('rm -rf ' . $destDir);
+            mkdir($destDir, 0775, true);
         }
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $product = new Product();
 
-            $filePath = $faker->image(dir: '/tmp', width: 640, height: 480);
+            $filePath = $faker->image(dir: '/tmp');
 
-            $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-            $filename = uniqid('products_', true) . '.' . $ext;
+            if ($filePath) {
+                $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+                $filename = uniqid('products_', true) . '.' . $ext;
 
-            $filesystem->copy($filePath, $destDir . '/' . $filename);
-
-            $filesystem->remove($filePath);
+                copy($filePath, $destDir . '/' . $filename);
+                $product->setImageFilename($filename);
+            }
 
             $product->setTitle($faker->words(3, true))
-                ->setImageFilename($filename)
-                ->setPrice($faker->numberBetween($min = 50, $max = 300))
-                ->setDescription($faker->realText($maxNbChars = 200, $indexSize = 2))
-                ->setCategory($this->getReference('category-' . rand(0, 5), Category::class))
-            ;
+                ->setPrice($faker->numberBetween(50, 300))
+                ->setDescription($faker->realText(rand(100, 200)))
+                ->setCategory($this->getReference('category-' . rand(0, 5), Category::class));
 
             $manager->persist($product);
         }

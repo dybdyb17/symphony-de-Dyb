@@ -119,14 +119,13 @@ final class ProductController extends AbstractController
     public function delete(Product $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-            $filesystem = new Filesystem();
             $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/products';
 
             $filename = $product->getImageFilename();
             if ($filename) {
                 $filePath = $uploadDir . '/' . $filename;
-                if ($filesystem->exists($filePath)) {
-                    $filesystem->remove($filePath);
+                if (file_exists($filePath)) {
+                    exec('rm -rf ' . $filePath);
                 }
             }
 
