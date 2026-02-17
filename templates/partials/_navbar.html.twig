@@ -1,8 +1,6 @@
-{{ dump(app.user) }}
-
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="{{ path('app_home') }}">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -15,9 +13,7 @@
                 </li>
 
                 {% if app.user %}
-                    {% set role = app.user.roles|find(role => role == 'ROLE_ADMIN') %}
-
-                    {% if role %}
+                    {% if 'ROLE_ADMIN' in app.user.roles %}
                         <li class="nav-item">
                             <a class="btn btn-danger" href="{{ path('app_admin_dashboard') }}">Espace admin</a>
                         </li>
@@ -26,11 +22,25 @@
 
             </ul>
 
-            <form class="d-flex" role="search">
+            <ul class="navbar-nav">
+                {% if app.user %}
+                    <li class="nav-item">
+                        <span class="nav-link">{{ app.user.email }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger" href="{{ path('app_logout') }}">Déconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="{{ path('app_login') }}">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <form class="d-flex ms-3" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
     </div>
 </nav>
-
