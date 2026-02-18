@@ -26,7 +26,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             mkdir($destDir, 0775, true);
         }
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $product = new Product();
 
             $filePath = $faker->image(dir: '/tmp');
