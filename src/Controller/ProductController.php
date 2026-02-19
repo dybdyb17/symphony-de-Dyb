@@ -72,7 +72,7 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Product $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ProductType::class, $product);
@@ -119,7 +119,7 @@ final class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}/delete', name: 'app_product_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_product_delete', methods: ['POST'])]
     public function delete(Product $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
@@ -140,7 +140,7 @@ final class ProductController extends AbstractController
         return $this->redirectToRoute('app_product_index');
     }
 
-    #[Route('/product/{id}', name: 'app_product_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_product_show', methods: ['GET'])]
     public function show(Product $product): Response
     {
         return $this->render('admin/product/show.html.twig', [
